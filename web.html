@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HP GAMING | Pure HTML & CSS OMEN, Victus & RTX Showcase</title>
+
+  <!-- Google Fonts: Orbitron for futuristic gaming headings & Inter for clean UI -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5.3.3 CSS ONLY (Zero JavaScript) & Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <style>
+    /* ==========================================================================
+       1. DESIGN TOKENS & CUSTOM VARIABLES
+       ========================================================================== */
+    :root {
+      --omen-red: #e60023;
+      --omen-red-glow: rgba(230, 0, 35, 0.55);
+      --victus-cyan: #00d2ff;
+      --victus-cyan-glow: rgba(0, 210, 255, 0.55);
+      --rtx-green: #76b900;
+      --rtx-green-glow: rgba(118, 185, 0, 0.5);
+      --bg-void: #07090d;
+      --bg-surface: #0f131c;
+      --bg-card: #141925;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-void);
+      color: #f1f5f9;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, .brand-font {
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 0.04em;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-void);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #283044;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--omen-red);
+    }
+
+    /* ==========================================================================
+       2. PURE CSS KEYFRAME ANIMATIONS
+       ========================================================================== */
+    @keyframes floatHardware {
+      0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-14px) rotate(1deg);
+      }
+    }
+
+    @keyframes neonPulse {
+      0%, 100% {
+        opacity: 0.45;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.85;
+        transform: scale(1.08);
+      }
+    }
+
+    @keyframes gridScroll {
+      0% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: 40px 40px;
+      }
+    }
+
+    @keyframes buttonShimmer {
+      0% {
+        left: -100%;
+      }
+      100% {
+        left: 200%;
+      }
+    }
+
+    @keyframes fadeSlideUp {
+      0% {
+        opacity: 0;
+        transform: translateY(28px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes rgbBorderGlow {
+      0%, 100% {
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 28px rgba(230, 0, 35, 0.35);
+        border-color: rgba(230, 0, 35, 0.55);
+      }
+      50% {
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 32px rgba(0, 210, 255, 0.45);
+        border-color: rgba(0, 210, 255, 0.65);
+      }
+    }
+
+    @keyframes modalPopIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.92) translateY(18px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    /* Staggered Entrance Utilities */
+    .animate-entrance {
+      opacity: 0;
+      animation: fadeSlideUp 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .stagger-1 { animation-delay: 0.1s; }
+    .stagger-2 { animation-delay: 0.22s; }
+    .stagger-3 { animation-delay: 0.34s; }
+
+    /* ==========================================================================
+       3. PURE CSS MOBILE NAVBAR TOGGLE (ZERO JS CHECKBOX HACK)
+       ========================================================================== */
+    .navbar-glass {
+      background: rgba(7, 9, 13, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: all 0.3s ease;
+    }
+
+    .nav-toggle-input {
+      display: none;
+    }
+
+    .nav-toggle-label {
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 0.5rem;
+      padding: 0.4rem 0.7rem;
+      color: #fff;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .nav-toggle-label:hover {
+      border-color: var(--omen-red);
+      box-shadow: 0 0 12px var(--omen-red-glow);
+    }
+
+    /* Expand menu on mobile when checkbox is checked */
+    @media (max-width: 991.98px) {
+      .pure-css-nav-menu {
+        display: none;
+        width: 100%;
+        padding-top: 1rem;
+      }
+      .nav-toggle-input:checked ~ .pure-css-nav-menu {
+        display: block;
+        animation: fadeSlideUp 0.3s ease forwards;
+      }
+    }
+
+    @media (min-width: 992px) {
+      .nav-toggle-label {
+        display: none;
+      }
+      .pure-css-nav-menu {
+        display: flex !important;
+        flex-grow: 1;
+        align-items: center;
+      }
+    }
+
+    .nav-link {
+      position: relative;
+      font-weight: 500;
+      color: #cbd5e1 !important;
+      transition: color 0.25s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--omen-red), var(--victus-cyan));
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateX(-50%);
+    }
+
+    .nav-link:hover {
+      color: #ffffff !important;
+    }
+
+    .nav-link:hover::after {
+      width: 80%;
+    }
+
+    /* ==========================================================================
+       4. HERO SECTION & AMBIENT GLOWS
+       ========================================================================== */
+    .hero-arena {
+      position: relative;
+      padding: 110px 0 90px;
+      background-color: var(--bg-void);
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridScroll 12s linear infinite;
+      border-bottom: 1px solid var(--border-subtle);
+      overflow: hidden;
+    }
+
+    .hero-glow-red {
+      position: absolute;
+      top: -120px;
+      left: -100px;
+      width: 480px;
+      height: 480px;
+      background: radial-gradient(circle, rgba(230, 0, 35, 0.24) 0%, transparent 70%);
+      pointer-events: none;
+      animation: neonPulse 6s ease-in-out infinite;
+    }
+
+    .hero-glow-cyan {
+      position: absolute;
+      bottom: -140px;
+      right: -80px;
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, rgba(0, 210, 255, 0.22) 0%, transparent 70%);
+      pointer-events: none;
+      animation: neonPulse 7s ease-in-out infinite reverse;
+    }
+
+    .hero-hardware-stage {
+      position: relative;
+      animation: floatHardware 5.5s ease-in-out infinite;
+    }
+
+    .hero-hardware-stage img {
+      border-radius: 1.25rem;
+      border: 1px solid rgba(0, 210, 255, 0.45);
+      animation: rgbBorderGlow 5s ease-in-out infinite;
+    }
+
+    /* ==========================================================================
+       5. NEON SHIMMER BUTTONS
+       ========================================================================== */
+    .btn-omen {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #e60023 0%, #b8001c 100%);
+      color: #fff;
+      border: none;
+      font-weight: 600;
+      border-radius: 0.6rem;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .btn-omen::before,
+    .btn-victus::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transform: skewX(-25deg);
+    }
+
+    .btn-omen:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 22px var(--omen-red-glow);
+      color: #fff;
+    }
+
+    .btn-omen:hover::before,
+    .btn-victus:hover::before {
+      animation: buttonShimmer 0.75s ease forwards;
+    }
+
+    .btn-victus {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #00d2ff 0%, #0088cc 100%);
+      color: #05080f;
+      border: none;
+      font-weight: 700;
+      border-radius: 0.6rem;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .btn-victus:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 22px var(--victus-cyan-glow);
+      color: #05080f;
+    }
+
+    /* ==========================================================================
+       6. PURE CSS CATEGORY FILTERING (:checked + SIBLING COMBINATOR ~)
+       ========================================================================== */
+    .filter-radio {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .filter-bar-sticky {
+      position: sticky;
+      top: 72px;
+      z-index: 1010;
+      background: rgba(7, 9, 13, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .filter-pill-label {
+      display: inline-flex;
+      align-items: center;
+      background: var(--bg-card);
+      color: #94a3b8;
+      border: 1px solid var(--border-subtle);
+      border-radius: 50rem;
+      padding: 0.55rem 1.35rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .filter-pill-label:hover {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    /* Active pill highlight states when corresponding radio is checked */
+    #filter-all:checked ~ .filter-bar-sticky label[for="filter-all"],
+    #filter-laptops:checked ~ .filter-bar-sticky label[for="filter-laptops"],
+    #filter-desktops:checked ~ .filter-bar-sticky label[for="filter-desktops"],
+    #filter-gpus:checked ~ .filter-bar-sticky label[for="filter-gpus"] {
+      background: linear-gradient(135deg, var(--omen-red), #9e0018);
+      color: #fff;
+      border-color: var(--omen-red);
+      box-shadow: 0 0 18px var(--omen-red-glow);
+    }
+
+    /* Show/Hide Sections based on checked radio input */
+    #filter-laptops:checked ~ main #desktops-section,
+    #filter-laptops:checked ~ main #gpu-section {
+      display: none;
+    }
+
+    #filter-desktops:checked ~ main #laptops-section,
+    #filter-desktops:checked ~ main #gpu-section {
+      display: none;
+    }
+
+    #filter-gpus:checked ~ main #laptops-section,
+    #filter-gpus:checked ~ main #desktops-section {
+      display: none;
+    }
+
+    /* Re-trigger entrance animation on filtered sections */
+    #filter-all:checked ~ main .catalog-group,
+    #filter-laptops:checked ~ main #laptops-section,
+    #filter-desktops:checked ~ main #desktops-section,
+    #filter-gpus:checked ~ main #gpu-section {
+      animation: fadeSlideUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    /* ==========================================================================
+       7. PRODUCT CARDS & HOVER TRANSITIONS
+       ========================================================================== */
+    .gaming-card {
+      background: linear-gradient(180deg, var(--bg-card) 0%, #0d111a 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: 1rem;
+      overflow: hidden;
+      transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+                  border-color 0.38s ease,
+                  box-shadow 0.38s ease;
+    }
+
+    /* OMEN Red Hover Glow */
+    .gaming-card.theme-omen:hover {
+      transform: translateY(-10px) scale(1.01);
+      border-color: var(--omen-red);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(230, 0, 35, 0.35);
+    }
+
+    /* Victus Cyan Hover Glow */
+    .gaming-card.theme-victus:hover {
+      transform: translateY(-10px) scale(1.01);
+      border-color: var(--victus-cyan);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 210, 255, 0.35);
+    }
+
+    /* RTX NVIDIA Green Hover Glow */
+    .gaming-card.theme-rtx:hover {
+      transform: translateY(-10px) scale(1.01);
+      border-color: var(--rtx-green);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(118, 185, 0, 0.35);
+    }
+
+    .card-img-wrapper {
+      position: relative;
+      overflow: hidden;
+      background: #080a0f;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .card-img-wrapper img {
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
+    }
+
+    .gaming-card:hover .card-img-wrapper img {
+      transform: scale(1.08);
+    }
+
+    .quick-view-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(7, 9, 13, 0.68);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .gaming-card:hover .quick-view-overlay {
+      opacity: 1;
+    }
+
+    .spec-badge-list li {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-bottom: 0.45rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-header-line {
+      height: 3px;
+      width: 72px;
+      background: linear-gradient(90deg, var(--omen-red), var(--victus-cyan));
+      border-radius: 2px;
+      margin: 0.75rem auto 0;
+    }
+
+    /* ==========================================================================
+       8. PURE CSS QUICK SPECS MODAL SYSTEM (:target PSEUDO-CLASS)
+       ========================================================================== */
+    .css-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 1080;
+      background: rgba(4, 6, 10, 0.84);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .css-modal-backdrop:target {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .css-modal-dialog {
+      background: var(--bg-surface);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 1rem;
+      max-width: 760px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 25px 65px rgba(0, 0, 0, 0.9), 0 0 30px rgba(230, 0, 35, 0.25);
+    }
+
+    .css-modal-backdrop:target .css-modal-dialog {
+      animation: modalPopIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    /* Invisible anchor target to close modals without scrolling to page top */
+    #close-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Anchor target for closing Quick Specs modals cleanly without page jump -->
+  <span id="close-modal"></span>
+
+  <!-- ========================================================================
+       STICKY GLASSMORPHISM NAVBAR (PURE CSS CHECKBOX MOBILE TOGGLE)
+       ======================================================================== -->
+  <nav class="navbar navbar-expand-lg navbar-glass sticky-top py-3">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2 brand-font fw-bold fs-4 text-white" href="#">
+        <span class="badge bg-danger px-2 py-1 rounded-2">HP</span>
+        <span>GAMING</span>
+      </a>
+
+      <!-- Pure CSS Mobile Toggle Checkbox & Label -->
+      <input type="checkbox" id="navToggle" class="nav-toggle-input">
+      <label for="navToggle" class="nav-toggle-label" aria-label="Toggle navigation menu">
+        <i class="bi bi-list fs-4"></i>
+      </label>
+
+      <div class="pure-css-nav-menu">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3">
+          <li class="nav-item">
+            <a class="nav-link" href="#laptops-section">Gaming Laptops</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#desktops-section">Desktop PCs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#gpu-section">RTX Graphics Cards</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#ecosystem-section">OMEN Ecosystem</a>
+          </li>
+        </ul>
+
+        <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0">
+          <a href="#catalog-controls" class="btn btn-omen btn-sm rounded-pill px-3 py-2">
+            <i class="bi bi-cpu-fill me-1"></i> Build Your Rig
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========================================================================
+       HERO SHOWCASE ARENA
+       ======================================================================== -->
+  <header class="hero-arena">
+    <div class="hero-glow-red"></div>
+    <div class="hero-glow-cyan"></div>
+
+    <div class="container position-relative z-1">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6 animate-entrance stagger-1">
+          <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-3" style="background: rgba(230,0,35,0.14); border: 1px solid rgba(230,0,35,0.4);">
+            <span class="badge bg-danger rounded-pill">PURE CSS</span>
+            <span class="small fw-semibold text-light">OMEN Cryo Chamber &amp; RTX 40-Series Lineup</span>
+          </div>
+
+          <h1 class="display-4 fw-black text-white mb-3 lh-sm">
+            DOMINATE EVERY <span style="color: var(--omen-red);">FRAME</span> &amp; <span style="color: var(--victus-cyan);">ARENA</span>
+          </h1>
+
+          <p class="lead text-secondary mb-4">
+            From ultra-portable 240Hz OMEN &amp; Victus laptops to liquid-cooled OMEN 45L battle stations and factory-overclocked GeForce RTX™ GPUs.
+          </p>
+
+          <div class="d-flex flex-wrap gap-3">
+            <a href="#catalog-controls" class="btn btn-omen btn-lg px-4 py-3">
+              <i class="bi bi-lightning-charge-fill me-2"></i>Explore Hardware
+            </a>
+            <a href="#gpu-section" class="btn btn-outline-light btn-lg px-4 py-3 rounded-3">
+              <i class="bi bi-gpu-card me-2 text-info"></i>Upgrade GPU
+            </a>
+          </div>
+
+          <!-- Quick Hardware Metrics -->
+          <div class="row g-3 mt-4 pt-3 border-top border-secondary border-opacity-25">
+            <div class="col-4">
+              <div class="brand-font fw-bold fs-4 text-white">240Hz</div>
+              <div class="small text-secondary">QHD OLED Displays</div>
+            </div>
+            <div class="col-4">
+              <div class="brand-font fw-bold fs-4 text-danger">RTX 4090</div>
+              <div class="small text-secondary">Ada Lovelace Power</div>
+            </div>
+            <div class="col-4">
+              <div class="brand-font fw-bold fs-4 text-info">CRYO</div>
+              <div class="small text-secondary">Patented Cooling</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 text-center animate-entrance stagger-2">
+          <div class="hero-hardware-stage">
+            <img src="images/hero.jpg"
+                 alt="HP OMEN Gaming Setup"
+                 class="img-fluid">
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       PURE CSS RADIO INPUTS (CONTROLS SIBLING CATALOG SECTIONS BELOW)
+       ======================================================================== -->
+  <input type="radio" name="hardware-filter" id="filter-all" class="filter-radio" checked>
+  <input type="radio" name="hardware-filter" id="filter-laptops" class="filter-radio">
+  <input type="radio" name="hardware-filter" id="filter-desktops" class="filter-radio">
+  <input type="radio" name="hardware-filter" id="filter-gpus" class="filter-radio">
+
+  <!-- ========================================================================
+       STICKY INTERACTIVE CATEGORY FILTER BAR
+       ======================================================================== -->
+  <section id="catalog-controls" class="py-4 filter-bar-sticky">
+    <div class="container">
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <div class="d-flex flex-wrap gap-2" role="group" aria-label="Hardware Category Filters">
+          <label for="filter-all" class="filter-pill-label">
+            <i class="bi bi-grid-3x3-gap-fill me-2"></i> All Hardware (9)
+          </label>
+          <label for="filter-laptops" class="filter-pill-label">
+            <i class="bi bi-laptop me-2"></i> Gaming Laptops (3)
+          </label>
+          <label for="filter-desktops" class="filter-pill-label">
+            <i class="bi bi-pc-display me-2"></i> Gaming Desktops (3)
+          </label>
+          <label for="filter-gpus" class="filter-pill-label">
+            <i class="bi bi-gpu-card me-2"></i> Graphics Cards (3)
+          </label>
+        </div>
+
+        <div class="text-secondary small d-none d-md-block">
+          <i class="bi bi-shield-check text-info me-1"></i> Free Express Gaming Delivery &amp; 2-Year HP Care Pack
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       MAIN PRODUCT CATALOG (LAPTOPS, DESKTOPS, GRAPHICS CARDS)
+       ======================================================================== -->
+  <main class="py-5">
+    <div class="container">
+
+      <!-- ====================================================================
+           SECTION 1: HP GAMING LAPTOPS (OMEN & VICTUS)
+           ==================================================================== -->
+      <section id="laptops-section" class="mb-5 pb-4 catalog-group">
+        <div class="text-center mb-5 animate-entrance">
+          <span class="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-50 px-3 py-1 mb-2">PORTABLE POWERHOUSES</span>
+          <h2 class="fw-bold text-white">HP GAMING LAPTOPS</h2>
+          <p class="text-secondary">Engineered with OMEN Tempest Cooling and high-refresh rate anti-ghosting displays.</p>
+          <div class="section-header-line"></div>
+        </div>
+
+        <div class="row g-4">
+          <!-- Laptop 1: OMEN 17 -->
+          <div class="col-md-6 col-lg-4 animate-entrance stagger-1">
+            <div class="card gaming-card theme-omen h-100">
+              <div class="card-img-wrapper">
+                <span class="badge bg-danger position-absolute top-0 start-0 m-3 z-1">OMEN FLAGSHIP</span>
+                <span class="badge bg-dark border border-secondary position-absolute top-0 end-0 m-3 z-1">240Hz QHD</span>
+                <img src="images/omen17.jpg" alt="HP OMEN 17">
+                <div class="quick-view-overlay">
+                  <a href="#modal-omen17" class="btn btn-light btn-sm fw-semibold rounded-pill px-3">
+                    <i class="bi bi-eye-fill me-1"></i> Quick Specs
+                  </a>
+                </div>
+              </div>
+              <div class="card-body d-flex flex-column p-4">
+                <h5 class="card-title brand-font fw-bold text-white mb-2">HP OMEN 17-db0099nr</h5>
+                <ul class="list-unstyled spec-badge-list mt-2 mb-4">
+                  <li><i class="bi bi-cpu text-danger"></i> Intel® Core™ i9-14900HX (24-Core)</li>
+                  <li><i class="bi bi-gpu-card text-danger"></i> NVIDIA® GeForce RTX™ 4080 12GB</li>
+                  <li><i class="bi bi-memory text-danger"></i> 32GB DDR5-5600 MHz Dual-Channel</li>
+                  <li><i class="bi bi-device-ssd text-danger"></i> 2TB PCIe® Gen4 NVMe™ M.2 SSD</li>
+                </ul>
+                <div class="mt-auto pt-3 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+                  <div>
+                    <small class="text-secondary d-block">Starting at</small>
+                    <span class="fs-4 fw-bold text-white">$2,199</span>
+                  </div>
+                  <a href="#modal-omen17" class="btn btn-omen px-3 py-2">
+                    <i class="bi bi-sliders me-1"></i> Inspect
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Laptop 2: OMEN Transcend 14 -->
+          <div class="col-md-6 col-lg-4 animate-entrance stagger-2">
+            <div class="card gaming-card theme-omen h-100">
+              <div class="card-img-wrapper">
+                <span class="badge bg-danger position-absolute top-0 start-0 m-3 z-1">ULTRA-LIGHT OLED</span>
+                <span class="badge bg-dark border border-secondary position-absolute top-0 end-0 m-3 z-1">120Hz 2.8K</span>
+                <img src="images/transcend14.jpg" alt="OMEN Transcend 14">
+                <div class="quick-view-overlay">
+                  <a href="#modal-transcend14" class="btn btn-light btn-sm fw-semibold rounded-pill px-3">
+                    <i class="bi bi-eye-fill me-1"></i> Quick Specs
+                  </a>
+                </div>
+              </div>
+              <div class="card-body d-flex flex-column p-4">
+                <h5 class="card-title brand-font fw-bold text-white mb-2">OMEN Transcend 14</h5>
+                <ul class="list-unstyled spec-badge-list mt-2 mb-4">
+                  <li><i class="bi bi-cpu text-danger"></i> Intel® Core™ Ultra 9 185H AI</li>
+                  <li><i class="bi bi-gpu-card text-danger"></i> NVIDIA® GeForce RTX™ 4070 8GB</li>
+                  <li><i class="bi bi-memory text-danger"></i> 32GB LPDDR5x-7467 MHz RAM</li>
+                  <li><i class="bi bi-device-ssd text-danger"></i> 1TB PCIe® Gen4 Performance SSD</li>
+                </ul>
+                <div class="mt-auto pt-3 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+                  <div>
+                    <small class="text-secondary d-block">Starting at</small>
+                    <span class="fs-4 fw-bold text-white">$1,799</span>
+                  </div>
+                  <a href="#modal-transcend14" class="btn btn-omen px-3 py-2">
+                    <i class="bi bi-sliders me-1"></i> Inspect
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Laptop 3: Victus 16 -->
+          <div class="col-md-6 col-lg-4 animate-entrance stagger-3">
+            <div class="card gaming-card theme-victus h-100">
+              <div class="card-img-wrapper">
+                <span class="badge bg-info text-dark fw-bold position-absolute top-0 start-0 m-3 z-1">VICTUS PERFORMANCE</span>
+                <span class="badge bg-dark border border-secondary position-absolute top-0 end-0 m-3 z-1">165Hz FHD</span>
+                <img src="images/victus16.jpg" alt="HP Victus 16">
+                <div class="quick-view-overlay">
+                  <a href="#modal-victus16" class="btn btn-light btn-sm fw-semibold rounded-pill px-3">
+                    <i class="bi bi-eye-fill me-1"></i> Quick Specs
+                  </a>
+                </div>
+              </div>
+              <div class="card-body d-flex flex-column p-4">
+                <h5 class="card-title brand-font fw-bold text-white mb-2">HP Victus 16-s1023dx</h5>
+                <ul class="list-unstyled spec-badge-list mt-2 mb-4">
+                  <li><i class="bi bi-cpu text-info"></i> AMD Ryzen™ 7 8845HS (8-Core)</li>
+                  <li><i class="bi bi-gpu-card text-info"></i> NVIDIA® GeForce RTX™ 4060 8GB</li>
+                  <li><i class="bi bi-memory text-info"></i> 16GB DDR5-5600 MHz RAM</li>
+                  <li><i class="bi bi-device-ssd text-info"></i> 1TB PCIe® Gen4 NVMe™ SSD</li>
+                </ul>
+                <div class="mt-auto pt-3 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+                  <div>
+                    <small class="text-secondary d-block">Starting at</small>
+                    <span class="fs-4 fw-bold text-white">$1,149</span>
+                  </div>
+                  <a href="#modal-victus16" class="btn btn-victus px-3 py-2">
+                    <i class="bi bi-sliders me-1"></i> Inspect
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           SECTION 2: HP GAMING DESKTOP PCs (OMEN 45L, OMEN 25L, VICTUS 15L)
+           ==================================================================== -->
+      <section id="desktops-section" class="mb-5 pb-4 catalog-group">
+        <div class="text-center mb-5 animate-entrance">
+          <span class="badge bg-info bg-opacity-25 text-info border border-info border-opacity-50 px-3 py-1 mb-2">BATTLE STATIONS</span>
+          <h2 class="fw-bold text-white">HP GAMING DESKTOP PCs</h2>
+          <p class="text-secondary">Tool-less upgradability, tempered glass RGB chassis, and patented OMEN Cryo Chamber™ liquid cooling.</p>
+          <div class="section-header-line"></div>
+        </div>
+
+        <div class="row g-4">
+          <!-- Desktop 1: OMEN 45L -->
+          <div class="col-md-6 col-lg-4 animate-entrance stagger-1">
+            <div class="card gaming-card theme-omen h-100">
+              <div class="card-img-wrapper">
+                <span class="badge bg-danger position-absolute top-0 start-0 m-3 z-1">CRYO CHAMBER™</span>
+                <span class="badge bg-dark border border-secondary position-absolute top-0 end-0 m-3 z-1">360mm AIO</span>
+                <img src="images/omen45l.jpg" alt="HP OMEN 45L">
+                <div class="quick-view-overlay">
+                  <a href="#modal-omen45l" class="btn btn-light btn-sm fw-semibold rounded-pill px-3">
+                    <i class="bi bi-eye-fill me-1"></i> Quick Specs
+                  </a>
+                </div>
+              </div>
+              <div class="card-body d-flex flex-column p-4">
+                <h5 class="card-title brand-font fw-bold text-white mb-2">HP OMEN 45L GT22-2090</h5>
+                <ul class="list-unstyled spec-badge-list mt-2 mb-4">
+                  <li><i class="bi bi-cpu text-danger"></i> Intel® Core™ i9-14900K (6.0 GHz)</li>
+                  <li><i class="bi bi-gpu-card text-danger"></i> NVIDIA® GeForce RTX™ 4090 24GB</li>
+                  <li><i class="bi bi-memory text-danger"></i> 64GB Kingston FURY DDR5 RGB</li>
+                  <li><i class="bi bi-hdd-stack text-danger"></i> 2TB WD_BLACK SN850X NVMe™</li>
+                </ul>
+                <div class="mt-auto pt-3 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+                  <div>
+                    <small class="text-secondary d-block">Pro Tower</small>
+                    <span class="fs-4 fw-bold text-white">$3,499</span>
+                  </div>
+                  <a href="#modal-omen45l" class="btn btn-omen px-3 py-2">
+                    <i class="bi bi-sliders me-1"></i> Inspect
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop 2: OMEN 25L -->
+          <div class="col-md-6 col-lg-4 animate-entrance stagger-2">
+            <div class="card gaming-card theme-omen h-100">
+              <div class="card-img-wrapper">
+                <span class="badge bg-danger position-absolute top-0 start-0 m-3 z-1">MID-TOWER RGB</span>
+                <span class="badge bg-dark border border-secondary position-absolute top-0 end-0 m-3 z-1">120mm Liquid</span>
+                <img src="images/omen25l.jpg" alt="HP OMEN 25L">
+                <div class="quick-view-overlay">
+                  <a href="#modal-omen25l" class="btn btn-light btn-sm fw-semibold rounded-pill px-3">
+                    <i class="bi bi-eye-fill me-1"></i> Quick Specs
+                  </a>
+                </div>
+              </div>
+              <div class="card-body d-flex flex-column p-4">
+                <h5 class="card-title brand-font fw-bold text-white mb-2">HP OMEN 25L GT15-2045</h5>
+                <ul class="list-unstyled spec-badge-list mt-2 mb-4">
+                  <li><i class="bi bi-cpu text-danger"></i> Intel® Core™ i7-14700F (20-Core)</li>
+                  <li><i class="bi bi-gpu-card text-danger"></i> NVIDIA® GeForce RTX™ 4070 SUPER</li>
+                  <li><i class="bi bi-memory text-danger"></i> 32GB HyperX DDR5-5200 MHz</li>
+                  <li><i class="bi bi-hdd-stack text-danger"></i> 1TB PCIe® Gen4 NVMe™ M.2 SSD</li>
+                </ul>
+                <div class="mt-auto pt-3 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+                  <div>
+                    <small class="text-secondary d-block">Mid Tower</small>
+                    <span class="fs-4 fw-bold text-white">$1,699</span>
+                  </div>
+                  <a href="#modal-omen25l" class="btn btn-omen px-3 py-2">
+                    <i class="bi bi-sliders me-1"></i> Inspect
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop 3: Victus 15L -->
+          <div class="col-md-6 col-lg-4 animate-entrance stagger-3">
+            <div class="card gaming-card theme-victus h-100">
+              <div class="card-img-wrapper">
+                <span class="badge bg-info text-dark fw-bold position-absolute top-0 start-0 m-3 z-1">COMPACT 15L</span>
+                <span class="badge bg-dark border border-secondary position-absolute top-0 end-0 m-3 z-1">Wi-Fi 6E</span>
+                <img src="images/victus15l.jpg" alt="HP Victus 15L">
+                <div class="quick-view-overlay">
+                  <a href="#modal-victus15l" class="btn btn-light btn-sm fw-semibold rounded-pill px-3">
+                    <i class="bi bi-eye-fill me-1"></i> Quick Specs
+                  </a>
+                </div>
+              </div>
+              <div class="card-body d-flex flex-column p-4">
+                <h5 class="card-title brand-font fw-bold text-white mb-2">HP Victus 15L TG02-2000</h5>
+                <ul class="list-unstyled spec-badge-list mt-2 mb-4">
+                  <li><i class="bi bi-cpu text-info"></i> AMD Ryzen™ 7 8700G Processor</li>
+                  <li><i class="bi bi-gpu-card text-info"></i> NVIDIA® GeForce RTX™ 4060 Ti 8GB</li>
+                  <li><i class="bi bi-memory text-info"></i> 16GB DDR5-5200 MHz RAM</li>
+                  <li><i class="bi bi-hdd-stack text-info"></i> 1TB PCIe® NVMe™ M.2 SSD</li>
+                </ul>
+                <div class="mt-auto pt-3 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+                  <div>
+                    <small class="text-secondary d-block">Compact Rig</small>
+                    <span class="fs-4 fw-bold text-white">$1,099</span>
+                  </div>
+                  <a href="#modal-victus15l" class="btn btn-victus px-3 py-2">
+                    <i class="bi bi-sliders me-1"></i> Inspect
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           SECTION 3: NVIDIA GEFORCE RTX GRAPHICS CARDS
+           ==================================================================== -->
+      <section id="gpu-section" class="mb-5 pb-4 catalog-group">
+        <div class="text-center mb-5 animate-entrance">
+          <span class="badge px-3 py-1 mb-2" style="background: rgba(118,185,0,0.2); color: #9ae600; border: 1px solid rgba(118,185,0,0.45);">ADA LOVELACE ARCHITECTURE</span>
+          <h2 class="fw-bold text-white">GEFORCE RTX™ GRAPHICS CARDS</h2>
+          <p class="text-secondary">Supercharge your OMEN tower with DLSS 3.5 AI frame generation and full ray tracing.</p>
+          <div class="section-header-line"></div>
+        </div>
+
+        <div class="row g-4">
+          <!-- GPU 1: RTX 4090 -->
+          <div class="col-md-6 col-lg-4 animate-entrance stagger-1">
+            <div class="card gaming-card theme-rtx h-100">
+              <div class="card-img-wrapper">
+                <span class="badge position-absolute top-0 start-0 m-3 z-1" style="background: var(--rtx-green); color: #05080f;">4K / 8K BEAST</span>
+                <span class="badge bg-dark border border-secondary position-absolute top-0 end-0 m-3 z-1">24GB GDDR6X</span>
+                <img src="images/rtx4090.jpg" alt="RTX 4090">
+                <div class="quick-view-overlay">
+                  <a href="#modal-rtx4090" class="btn btn-light btn-sm fw-semibold rounded-pill px-3">
+                    <i class="bi bi-eye-fill me-1"></i> Quick Specs
+                  </a>
+                </div>
+              </div>
+              <div class="card-body d-flex flex-column p-4">
+                <h5 class="card-title brand-font fw-bold text-white mb-2">GeForce RTX™ 4090 OMEN OC</h5>
+                <ul class="list-unstyled spec-badge-list mt-2 mb-4">
+                  <li><i class="bi bi-stars" style="color: var(--rtx-green);"></i> 16,384 NVIDIA® CUDA® Cores</li>
+                  <li><i class="bi bi-speedometer2" style="color: var(--rtx-green);"></i> 2.61 GHz Boost Clock Speed</li>
+                  <li><i class="bi bi-memory" style="color: var(--rtx-green);"></i> 24GB GDDR6X (384-bit Bus)</li>
+                  <li><i class="bi bi-fan" style="color: var(--rtx-green);"></i> Triple-Fan Vapor Chamber Cooler</li>
+                </ul>
+                <div class="mt-auto pt-3 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+                  <div>
+                    <small class="text-secondary d-block">GPU Upgrade</small>
+                    <span class="fs-4 fw-bold text-white">$1,799</span>
+                  </div>
+                  <a href="#modal-rtx4090" class="btn btn-omen px-3 py-2">
+                    <i class="bi bi-sliders me-1"></i> Inspect
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- GPU 2: RTX 4080 Super -->
+          <div class="col-md-6 col-lg-4 animate-entrance stagger-2">
+            <div class="card gaming-card theme-rtx h-100">
+              <div class="card-img-wrapper">
+                <span class="badge position-absolute top-0 start-0 m-3 z-1" style="background: var(--rtx-green); color: #05080f;">4K ULTRA</span>
+                <span class="badge bg-dark border border-secondary position-absolute top-0 end-0 m-3 z-1">16GB GDDR6X</span>
+                <img src="images/rtx4080s.jpg" alt="RTX 4080 Super">
+                <div class="quick-view-overlay">
+                  <a href="#modal-rtx4080s" class="btn btn-light btn-sm fw-semibold rounded-pill px-3">
+                    <i class="bi bi-eye-fill me-1"></i> Quick Specs
+                  </a>
+                </div>
+              </div>
+              <div class="card-body d-flex flex-column p-4">
+                <h5 class="card-title brand-font fw-bold text-white mb-2">GeForce RTX™ 4080 SUPER</h5>
+                <ul class="list-unstyled spec-badge-list mt-2 mb-4">
+                  <li><i class="bi bi-stars" style="color: var(--rtx-green);"></i> 10,240 NVIDIA® CUDA® Cores</li>
+                  <li><i class="bi bi-speedometer2" style="color: var(--rtx-green);"></i> 2.55 GHz Boost Clock Speed</li>
+                  <li><i class="bi bi-memory" style="color: var(--rtx-green);"></i> 16GB GDDR6X (256-bit Bus)</li>
+                  <li><i class="bi bi-fan" style="color: var(--rtx-green);"></i> Dual-Ball Bearing Axial Fans</li>
+                </ul>
+                <div class="mt-auto pt-3 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+                  <div>
+                    <small class="text-secondary d-block">GPU Upgrade</small>
+                    <span class="fs-4 fw-bold text-white">$1,099</span>
+                  </div>
+                  <a href="#modal-rtx4080s" class="btn btn-omen px-3 py-2">
+                    <i class="bi bi-sliders me-1"></i> Inspect
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- GPU 3: RTX 4070 Ti Super -->
+          <div class="col-md-6 col-lg-4 animate-entrance stagger-3">
+            <div class="card gaming-card theme-rtx h-100">
+              <div class="card-img-wrapper">
+                <span class="badge position-absolute top-0 start-0 m-3 z-1" style="background: var(--rtx-green); color: #05080f;">1440P 240FPS</span>
+                <span class="badge bg-dark border border-secondary position-absolute top-0 end-0 m-3 z-1">16GB GDDR6X</span>
+                <img src="images/rtx4070tis.jpg" alt="RTX 4070 Ti Super">
+                <div class="quick-view-overlay">
+                  <a href="#modal-rtx4070tis" class="btn btn-light btn-sm fw-semibold rounded-pill px-3">
+                    <i class="bi bi-eye-fill me-1"></i> Quick Specs
+                  </a>
+                </div>
+              </div>
+              <div class="card-body d-flex flex-column p-4">
+                <h5 class="card-title brand-font fw-bold text-white mb-2">GeForce RTX™ 4070 Ti SUPER</h5>
+                <ul class="list-unstyled spec-badge-list mt-2 mb-4">
+                  <li><i class="bi bi-stars" style="color: var(--rtx-green);"></i> 8,448 NVIDIA® CUDA® Cores</li>
+                  <li><i class="bi bi-speedometer2" style="color: var(--rtx-green);"></i> 2.64 GHz Factory OC Boost</li>
+                  <li><i class="bi bi-memory" style="color: var(--rtx-green);"></i> 16GB GDDR6X (256-bit Bus)</li>
+                  <li><i class="bi bi-fan" style="color: var(--rtx-green);"></i> OMEN Light Studio RGB Sync</li>
+                </ul>
+                <div class="mt-auto pt-3 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+                  <div>
+                    <small class="text-secondary d-block">GPU Upgrade</small>
+                    <span class="fs-4 fw-bold text-white">$849</span>
+                  </div>
+                  <a href="#modal-rtx4070tis" class="btn btn-victus px-3 py-2">
+                    <i class="bi bi-sliders me-1"></i> Inspect
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           OMEN ECOSYSTEM & COOLING ARCHITECTURE BANNER
+           ==================================================================== -->
+      <section id="ecosystem-section" class="py-5 px-4 rounded-4 animate-entrance" style="background: linear-gradient(135deg, #111622 0%, #1a0b12 50%, #091d26 100%); border: 1px solid var(--border-subtle);">
+        <div class="row g-4 text-center">
+          <div class="col-md-4">
+            <div class="p-3">
+              <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 64px; height: 64px; background: rgba(230,0,35,0.15); border: 1px solid var(--omen-red);">
+                <i class="bi bi-snow2 fs-2 text-danger"></i>
+              </div>
+              <h5 class="brand-font fw-bold text-white">OMEN CRYO CHAMBER™</h5>
+              <p class="text-secondary small mb-0">
+                Patented external radiator compartment pulls cool ambient air from outside the case to drop CPU temperatures by up to 6°C under full load.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="p-3">
+              <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 64px; height: 64px; background: rgba(0,210,255,0.15); border: 1px solid var(--victus-cyan);">
+                <i class="bi bi-cpu-fill fs-2 text-info"></i>
+              </div>
+              <h5 class="brand-font fw-bold text-white">OMEN GAMING HUB</h5>
+              <p class="text-secondary small mb-0">
+                Real-time voltage undervolting, dynamic fan curves, Network Booster packet prioritization, and per-key RGB Light Studio control.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="p-3">
+              <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 64px; height: 64px; background: rgba(118,185,0,0.15); border: 1px solid var(--rtx-green);">
+                <i class="bi bi-tools fs-2" style="color: var(--rtx-green);"></i>
+              </div>
+              <h5 class="brand-font fw-bold text-white">TOOL-LESS ACCESS</h5>
+              <p class="text-secondary small mb-0">
+                Pop off tempered glass side panels with a single button press to swap RTX graphics cards, NVMe SSDs, or DDR5 memory sticks effortlessly.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ========================================================================
+       PURE CSS QUICK SPECS MODALS (:target DRIVEN — ZERO JAVASCRIPT)
+       ======================================================================== -->
+
+  <!-- Modal 1: OMEN 17 -->
+  <div id="modal-omen17" class="css-modal-backdrop">
+    <div class="css-modal-dialog">
+      <div class="p-3 px-4 border-bottom border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+        <div>
+          <span class="badge bg-danger me-2">OMEN FLAGSHIP</span>
+          <span class="brand-font fw-bold text-white">HP OMEN 17-db0099nr</span>
+        </div>
+        <a href="#close-modal" class="btn btn-sm btn-outline-light rounded-circle" aria-label="Close"><i class="bi bi-x-lg"></i></a>
+      </div>
+      <div class="p-4">
+        <div class="row g-4 align-items-center">
+          <div class="col-md-6">
+            <img src="images/omen17.jpg" alt="HP OMEN 17" class="img-fluid rounded-3 border border-secondary border-opacity-25 w-100">
+          </div>
+          <div class="col-md-6">
+            <p class="text-secondary small mb-3">Desktop-caliber gaming performance packed into a sleek 17.3-inch QHD 240Hz chassis with OMEN Tempest Cooling.</p>
+            <ul class="list-unstyled small text-light mb-4">
+              <li class="mb-2"><i class="bi bi-check2-circle text-danger me-2"></i>CPU: Intel® Core™ i9-14900HX (24 Cores)</li>
+              <li class="mb-2"><i class="bi bi-check2-circle text-danger me-2"></i>GPU: NVIDIA® GeForce RTX™ 4080 12GB GDDR6</li>
+              <li class="mb-2"><i class="bi bi-check2-circle text-danger me-2"></i>Display: 17.3" QHD 240Hz, 3ms, 100% sRGB</li>
+              <li class="mb-2"><i class="bi bi-check2-circle text-danger me-2"></i>Storage: 32GB DDR5 + 2TB PCIe Gen4 SSD</li>
+            </ul>
+            <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary border-opacity-25">
+              <span class="fs-3 fw-bold text-white">$2,199</span>
+              <a href="#close-modal" class="btn btn-omen px-4 py-2">Done</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: OMEN Transcend 14 -->
+  <div id="modal-transcend14" class="css-modal-backdrop">
+    <div class="css-modal-dialog">
+      <div class="p-3 px-4 border-bottom border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+        <div>
+          <span class="badge bg-danger me-2">ULTRA-LIGHT OLED</span>
+          <span class="brand-font fw-bold text-white">OMEN Transcend 14</span>
+        </div>
+        <a href="#close-modal" class="btn btn-sm btn-outline-light rounded-circle" aria-label="Close"><i class="bi bi-x-lg"></i></a>
+      </div>
+      <div class="p-4">
+        <div class="row g-4 align-items-center">
+          <div class="col-md-6">
+            <img src="images/transcend14.jpg" alt="OMEN Transcend 14" class="img-fluid rounded-3 border border-secondary border-opacity-25 w-100">
+          </div>
+          <div class="col-md-6">
+            <p class="text-secondary small mb-3">Weighing just 3.6 lbs with an all-metal CNC chassis and a stunning 120Hz IMAX Enhanced OLED display.</p>
+            <ul class="list-unstyled small text-light mb-4">
+              <li class="mb-2"><i class="bi bi-check2-circle text-danger me-2"></i>CPU: Intel® Core™ Ultra 9 185H AI Processor</li>
+              <li class="mb-2"><i class="bi bi-check2-circle text-danger me-2"></i>GPU: NVIDIA® GeForce RTX™ 4070 8GB GDDR6</li>
+              <li class="mb-2"><i class="bi bi-check2-circle text-danger me-2"></i>Display: 14" 2.8K OLED, 120Hz, 0.2ms, HDR 500</li>
+              <li class="mb-2"><i class="bi bi-check2-circle text-danger me-2"></i>Storage: 32GB LPDDR5x + 1TB Gen4 SSD</li>
+            </ul>
+            <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary border-opacity-25">
+              <span class="fs-3 fw-bold text-white">$1,799</span>
+              <a href="#close-modal" class="btn btn-omen px-4 py-2">Done</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Victus 16 -->
+  <div id="modal-victus16" class="css-modal-backdrop">
+    <div class="css-modal-dialog">
+      <div class="p-3 px-4 border-bottom border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+        <div>
+          <span class="badge bg-info text-dark me-2">VICTUS SERIES</span>
+          <span class="brand-font fw-bold text-white">HP Victus 16-s1023dx</span>
+        </div>
+        <a href="#close-modal" class="btn btn-sm btn-outline-light rounded-circle" aria-label="Close"><i class="bi bi-x-lg"></i></a>
+      </div>
+      <div class="p-4">
+        <div class="row g-4 align-items-center">
+          <div class="col-md-6">
+            <img src="images/victus16.jpg" alt="HP Victus 16" class="img-fluid rounded-3 border border-secondary border-opacity-25 w-100">
+          </div>
+          <div class="col-md-6">
+            <p class="text-secondary small mb-3">Built for smooth 1080p/1440p competitive esports with updated thermal airflow and AMD Ryzen 8000 power.</p>
+            <ul class="list-unstyled small text-light mb-4">
+              <li class="mb-2"><i class="bi bi-check2-circle text-info me-2"></i>CPU: AMD Ryzen™ 7 8845HS (8 Cores, 5.1 GHz)</li>
+              <li class="mb-2"><i class="bi bi-check2-circle text-info me-2"></i>GPU: NVIDIA® GeForce RTX™ 4060 8GB GDDR6</li>
+              <li class="mb-2"><i class="bi bi-check2-circle text-info me-2"></i>Display: 16.1" FHD 165Hz IPS Micro-Edge</li>
+              <li class="mb-2"><i class="bi bi-check2-circle text-info me-2"></i>Storage: 16GB DDR5 + 1TB PCIe Gen4 SSD</li>
+            </ul>
+            <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary border-opacity-25">
+              <span class="fs-3 fw-bold text-white">$1,149</span>
+              <a href="#close-modal" class="btn btn-victus px-4 py-2">Done</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: OMEN 45L -->
+  <div id="modal-omen45l" class="css-modal-backdrop">
+    <div class="css-modal-dialog">
+      <div class="p-3 px-4 border-bottom border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+        <div>
+          <span class="badge bg-danger me-2">CRYO CHAMBER™</span>
+          <span class="brand-font fw-bold text-white">HP OMEN 45L GT22-2090</span>
+        </div>
+        <a href="#close-modal" class="btn btn-sm btn-outline-light rounded-circle" aria-label="Close"><i class="bi bi-x-lg"></i></a>
+      </div>
+      <div class="p-4">
+        <div class="row g-4 align-items-center">
+          <div class="col-md-6">
+            <img src="images/omen45l.jpg" alt="HP OMEN 45L" class="img-fluid rounded-3 border border-secondary border-opacity-25 w-100">
+          </div>
+          <div class="col-md-6">
+            <p class="text-secondary small mb-3">Flagship ATX gaming tower featuring the patented external OMEN Cryo Chamber™ 360mm liquid cooler.</p>
+            <ul class="list-unstyled small text-light mb-4">
+              <li class="mb-2"><i class="bi bi-check2-circle text-danger me-2"></i>CPU: Intel® Core™ i9-14900K Unlocked (6.0 GHz)</li>
+              <li class="mb-2"><i class="bi bi-check2-circle text-danger me-2"></i>GPU: NVIDIA® GeForce RTX™ 4090 (24GB GDDR6X)</li>
+              <li class="mb-2"><i class="bi bi-check2-circle text-danger me-2"></i>Cooling: 360mm Cryo Chamber™ ARGB Liquid</li>
+              <li class="mb-2"><i class="bi bi-check2-circle text-danger me-2"></i>Memory: 64GB Kingston FURY DDR5 + 2TB NVMe</li>
+            </ul>
+            <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary border-opacity-25">
+              <span class="fs-3 fw-bold text-white">$3,499</span>
+              <a href="#close-modal" class="btn btn-omen px-4 py-2">Done</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 5: OMEN 25L -->
+  <div id="modal-omen25l" class="css-modal-backdrop">
+    <div class="css-modal-dialog">
+      <div class="p-3 px-4 border-bottom border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+        <div>
+          <span class="badge bg-danger me-2">MID-TOWER RGB</span>
+          <span class="brand-font fw-bold text-white">HP OMEN 25L GT15-2045</span>
+        </div>
+        <a href="#close-modal" class="btn btn-sm btn-outline-light rounded-circle" aria-label="Close"><i class="bi bi-x-lg"></i></a>
+      </div>
+      <div class="p-4">
+        <div class="row g-4 align-items-center">
+          <div class="col-md-6">
+            <img src="images/omen25l.jpg" alt="HP OMEN 25L" class="img-fluid rounded-3 border border-secondary border-opacity-25 w-100">
+          </div>
+          <div class="col-md-6">
+            <p class="text-secondary small mb-3">Balanced mid-tower powerhouse with tool-less tempered glass entry and OMEN Light Studio synchronization.</p>
+            <ul class="list-unstyled small text-light mb-4">
+              <li class="mb-2"><i class="bi bi-check2-circle text-danger me-2"></i>CPU: Intel® Core™ i7-14700F (20 Cores, 5.4 GHz)</li>
+              <li class="mb-2"><i class="bi bi-check2-circle text-danger me-2"></i>GPU: NVIDIA® GeForce RTX™ 4070 SUPER 12GB</li>
+              <li class="mb-2"><i class="bi bi-check2-circle text-danger me-2"></i>Memory: 32GB HyperX DDR5-5200 MHz RGB</li>
+              <li class="mb-2"><i class="bi bi-check2-circle text-danger me-2"></i>PSU: 800W 80 Plus Gold Certified Power Supply</li>
+            </ul>
+            <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary border-opacity-25">
+              <span class="fs-3 fw-bold text-white">$1,699</span>
+              <a href="#close-modal" class="btn btn-omen px-4 py-2">Done</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 6: Victus 15L -->
+  <div id="modal-victus15l" class="css-modal-backdrop">
+    <div class="css-modal-dialog">
+      <div class="p-3 px-4 border-bottom border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+        <div>
+          <span class="badge bg-info text-dark me-2">COMPACT 15L</span>
+          <span class="brand-font fw-bold text-white">HP Victus 15L TG02-2000</span>
+        </div>
+        <a href="#close-modal" class="btn btn-sm btn-outline-light rounded-circle" aria-label="Close"><i class="bi bi-x-lg"></i></a>
+      </div>
+      <div class="p-4">
+        <div class="row g-4 align-items-center">
+          <div class="col-md-6">
+            <img src="images/victus15l.jpg" alt="HP Victus 15L" class="img-fluid rounded-3 border border-secondary border-opacity-25 w-100">
+          </div>
+          <div class="col-md-6">
+            <p class="text-secondary small mb-3">Space-saving 15-liter micro-tower engineered for high-framerate gaming in dorms, studios, or living rooms.</p>
+            <ul class="list-unstyled small text-light mb-4">
+              <li class="mb-2"><i class="bi bi-check2-circle text-info me-2"></i>CPU: AMD Ryzen™ 7 8700G (8 Cores, 5.1 GHz)</li>
+              <li class="mb-2"><i class="bi bi-check2-circle text-info me-2"></i>GPU: NVIDIA® GeForce RTX™ 4060 Ti 8GB GDDR6</li>
+              <li class="mb-2"><i class="bi bi-check2-circle text-info me-2"></i>Memory: 16GB DDR5-5200 + 1TB PCIe NVMe SSD</li>
+              <li class="mb-2"><i class="bi bi-check2-circle text-info me-2"></i>Connectivity: Wi-Fi 6E &amp; SuperSpeed USB-C®</li>
+            </ul>
+            <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary border-opacity-25">
+              <span class="fs-3 fw-bold text-white">$1,099</span>
+              <a href="#close-modal" class="btn btn-victus px-4 py-2">Done</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 7: RTX 4090 -->
+  <div id="modal-rtx4090" class="css-modal-backdrop">
+    <div class="css-modal-dialog">
+      <div class="p-3 px-4 border-bottom border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+        <div>
+          <span class="badge me-2" style="background: var(--rtx-green); color: #05080f;">RTX FLAGSHIP</span>
+          <span class="brand-font fw-bold text-white">GeForce RTX™ 4090 OMEN OC</span>
+        </div>
+        <a href="#close-modal" class="btn btn-sm btn-outline-light rounded-circle" aria-label="Close"><i class="bi bi-x-lg"></i></a>
+      </div>
+      <div class="p-4">
+        <div class="row g-4 align-items-center">
+          <div class="col-md-6">
+            <img src="images/rtx4090.jpg" alt="RTX 4090" class="img-fluid rounded-3 border border-secondary border-opacity-25 w-100">
+          </div>
+          <div class="col-md-6">
+            <p class="text-secondary small mb-3">The ultimate Ada Lovelace graphics card for 4K 120Hz+ ray-traced gaming and intensive 3D AI rendering.</p>
+            <ul class="list-unstyled small text-light mb-4">
+              <li class="mb-2"><i class="bi bi-check2-circle me-2" style="color: var(--rtx-green);"></i>CUDA Cores: 16,384 | Boost Clock: 2.61 GHz</li>
+              <li class="mb-2"><i class="bi bi-check2-circle me-2" style="color: var(--rtx-green);"></i>VRAM: 24GB GDDR6X (384-bit Memory Interface)</li>
+              <li class="mb-2"><i class="bi bi-check2-circle me-2" style="color: var(--rtx-green);"></i>AI Tech: NVIDIA DLSS 3.5 Frame Generation</li>
+              <li class="mb-2"><i class="bi bi-check2-circle me-2" style="color: var(--rtx-green);"></i>Cooling: Triple-fan vapor chamber + metal backplate</li>
+            </ul>
+            <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary border-opacity-25">
+              <span class="fs-3 fw-bold text-white">$1,799</span>
+              <a href="#close-modal" class="btn btn-omen px-4 py-2">Done</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 8: RTX 4080 Super -->
+  <div id="modal-rtx4080s" class="css-modal-backdrop">
+    <div class="css-modal-dialog">
+      <div class="p-3 px-4 border-bottom border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+        <div>
+          <span class="badge me-2" style="background: var(--rtx-green); color: #05080f;">4K ULTRA</span>
+          <span class="brand-font fw-bold text-white">GeForce RTX™ 4080 SUPER</span>
+        </div>
+        <a href="#close-modal" class="btn btn-sm btn-outline-light rounded-circle" aria-label="Close"><i class="bi bi-x-lg"></i></a>
+      </div>
+      <div class="p-4">
+        <div class="row g-4 align-items-center">
+          <div class="col-md-6">
+            <img src="images/rtx4080s.jpg" alt="RTX 4080 Super" class="img-fluid rounded-3 border border-secondary border-opacity-25 w-100">
+          </div>
+          <div class="col-md-6">
+            <p class="text-secondary small mb-3">More cores and faster GDDR6X memory for blistering 4K ultra settings in AAA titles.</p>
+            <ul class="list-unstyled small text-light mb-4">
+              <li class="mb-2"><i class="bi bi-check2-circle me-2" style="color: var(--rtx-green);"></i>CUDA Cores: 10,240 | Boost Clock: 2.55 GHz</li>
+              <li class="mb-2"><i class="bi bi-check2-circle me-2" style="color: var(--rtx-green);"></i>VRAM: 16GB GDDR6X (256-bit, 23 Gbps)</li>
+              <li class="mb-2"><i class="bi bi-check2-circle me-2" style="color: var(--rtx-green);"></i>Outputs: 3x DisplayPort 1.4a, 1x HDMI 2.1a</li>
+              <li class="mb-2"><i class="bi bi-check2-circle me-2" style="color: var(--rtx-green);"></i>Cooling: Dual-ball bearing axial fans (0dB mode)</li>
+            </ul>
+            <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary border-opacity-25">
+              <span class="fs-3 fw-bold text-white">$1,099</span>
+              <a href="#close-modal" class="btn btn-omen px-4 py-2">Done</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 9: RTX 4070 Ti Super -->
+  <div id="modal-rtx4070tis" class="css-modal-backdrop">
+    <div class="css-modal-dialog">
+      <div class="p-3 px-4 border-bottom border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+        <div>
+          <span class="badge me-2" style="background: var(--rtx-green); color: #05080f;">1440P BEAST</span>
+          <span class="brand-font fw-bold text-white">GeForce RTX™ 4070 Ti SUPER</span>
+        </div>
+        <a href="#close-modal" class="btn btn-sm btn-outline-light rounded-circle" aria-label="Close"><i class="bi bi-x-lg"></i></a>
+      </div>
+      <div class="p-4">
+        <div class="row g-4 align-items-center">
+          <div class="col-md-6">
+            <img src="images/rtx4070tis.jpg" alt="RTX 4070 Ti Super" class="img-fluid rounded-3 border border-secondary border-opacity-25 w-100">
+          </div>
+          <div class="col-md-6">
+            <p class="text-secondary small mb-3">Upgraded to 16GB of GDDR6X memory, making it the sweet spot for max-settings 1440p and entry 4K gaming.</p>
+            <ul class="list-unstyled small text-light mb-4">
+              <li class="mb-2"><i class="bi bi-check2-circle me-2" style="color: var(--rtx-green);"></i>CUDA Cores: 8,448 | Factory OC Boost: 2.64 GHz</li>
+              <li class="mb-2"><i class="bi bi-check2-circle me-2" style="color: var(--rtx-green);"></i>VRAM: 16GB GDDR6X (256-bit Memory Interface)</li>
+              <li class="mb-2"><i class="bi bi-check2-circle me-2" style="color: var(--rtx-green);"></i>Encoders: Dual 8th-Gen NVIDIA NVENC with AV1</li>
+              <li class="mb-2"><i class="bi bi-check2-circle me-2" style="color: var(--rtx-green);"></i>Lighting: Addressable RGB synced via Light Studio</li>
+            </ul>
+            <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary border-opacity-25">
+              <span class="fs-3 fw-bold text-white">$849</span>
+              <a href="#close-modal" class="btn btn-victus px-4 py-2">Done</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       FOOTER
+       ======================================================================== -->
+  <footer class="py-5 border-top border-secondary border-opacity-25" style="background-color: #05070a;">
+    <div class="container">
+      <div class="row g-4 align-items-center">
+        <div class="col-md-6 text-center text-md-start">
+          <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2 brand-font fw-bold fs-5 text-white mb-2">
+            <span class="badge bg-danger">HP</span> GAMING HARDWARE
+          </div>
+          <p class="text-secondary small mb-0">
+            100% Pure HTML5 &amp; CSS3 Showcase (Zero JavaScript). OMEN, Victus, and HyperX are trademarks of HP Inc.
+          </p>
+        </div>
+        <div class="col-md-6 text-center text-md-end">
+          <div class="d-inline-flex gap-3 fs-5">
+            <a href="#laptops-section" class="text-secondary text-decoration-none small">Laptops</a>
+            <a href="#desktops-section" class="text-secondary text-decoration-none small">Desktops</a>
+            <a href="#gpu-section" class="text-secondary text-decoration-none small">Graphics Cards</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
